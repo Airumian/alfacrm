@@ -19,6 +19,7 @@ async def main():
     try:
         await client.check_auth()
         print(await client.lesson.get(1))
+        # print(await client.customer.get(1734))
     finally:
         await client.close()
 

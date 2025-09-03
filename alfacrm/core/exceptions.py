@@ -1,7 +1,7 @@
 import aiohttp
 
 
-class AioAlfaException(Exception):
+class AlfaException(Exception):
     def __init__(self, message: str):
         self._message = message
 
@@ -9,11 +9,7 @@ class AioAlfaException(Exception):
         return self._message
 
 
-class FieldNotEditable(AioAlfaException):
-    pass
-
-
-class ApiException(AioAlfaException):
+class ApiException(AlfaException):
     code = 500
 
     def __init__(self, request_info: aiohttp.RequestInfo | None = None, **kwargs):
@@ -23,10 +19,6 @@ class ApiException(AioAlfaException):
     def __str__(self):
         request_info_msg = str(self._request_info) if self._request_info else ""
         return f"Code: {self.code} - {self._message} {request_info_msg}"
-
-
-class NotFound(ApiException):
-    code = 404
 
 
 class BadRequest(ApiException):
@@ -39,6 +31,10 @@ class Unauthorized(ApiException):
 
 class Forbidden(ApiException):
     code = 403
+
+
+class NotFound(ApiException):
+    code = 404
 
 
 class MethodNotAllowed(ApiException):

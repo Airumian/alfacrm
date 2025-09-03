@@ -4,7 +4,14 @@ import typing
 
 import aiohttp
 
-from .exceptions import ApiException, BadRequest, Forbidden, NotFound, Unauthorized
+from .exceptions import (
+    ApiException,
+    BadRequest,
+    Forbidden,
+    MethodNotAllowed,
+    NotFound,
+    Unauthorized,
+)
 
 HOSTNAME_REGEX = re.compile(
     r"^(?:https://|http://)?([\w]*)(?:\.s20\.online)?[\w/0_-]*$"
@@ -42,7 +49,6 @@ def check_response(
         json_response = json_.loads(body)
     except ValueError:
         json_response = {}
-    is_ok = True
 
     if "errors" in json_response and json_response.get("errors"):
         code = 400
@@ -57,6 +63,8 @@ def check_response(
         raise Forbidden(request_info=request_info, message=error_msg)
     if code == 404:
         raise NotFound(request_info=request_info, message=error_msg)
+    if code == 405:
+        raise MethodNotAllowed(request_info=request_info, message=error_msg)
 
     return json_response
 

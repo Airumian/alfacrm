@@ -16,11 +16,8 @@ class AlfaClient:
         email: str,
         api_key: str,
         branch_id: int,
-        connections_limit: int | None = None,
         session: aiohttp.ClientSession | None = None,
     ):
-        self._connector_class: type[aiohttp.TCPConnector] = aiohttp.TCPConnector
-
         if session is None:
             session = self._create_session()
 

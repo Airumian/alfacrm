@@ -1,11 +1,6 @@
 import typing
 from typing import Any, Dict
 
-try:
-    from pydantic import BaseModel as _PydanticModel  # type: ignore
-except Exception:  # pragma: no cover
-    _PydanticModel = None  # type: ignore
-
 from .api import ApiClient, ApiMethod
 from .exceptions import NotFound
 from .page import Page

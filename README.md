@@ -1,135 +1,138 @@
 # Alfacrm
 
-**Alfacrm** - is an asynchronous implementation for the [AlfaCRM API](https://alfacrm.pro/rest-api)
+Асинхронный Python‑клиент для [AlfaCRM REST API v2](https://alfacrm.pro/knowledge/integration/api#googtrans(ru|null)).
 
-## Package is in development
+Библиотека построена на `aiohttp` и `pydantic v2`, предоставляет удобные менеджеры сущностей (list/get/save) и асинхронную пагинацию.
 
-## Installation using pip
+## Требования
 
-```ini
+- Python >= 3.12
+- Зависимости устанавливаются автоматически: `aiohttp`, `pydantic`
+
+## Установка
+
+```bash
 pip install alfacrm
 ```
 
-*Example:*
+## Быстрый старт
 
 ```python
 import asyncio
-from aioalfacrm import AlfaClient
-from aioalfacrm.entities import Location
+import os
 
-HOSTNAME = 'demo.s20.online'
-EMAIL = 'api-email@email.example'
-API_KEY = 'user-api-token'
-BRANCH_ID = 1
+from alfacrm import AlfaClient
+
+ALFACRM_API_KEY = os.getenv("ALFACRM_API_KEY")
+ALFACRM_EMAIL = os.getenv("ALFACRM_EMAIL")
+ALFACRM_BASE_URL = os.getenv("ALFACRM_BASE_URL")  # например: "demo.s20.online" или полный URL
+ALFACRM_DEFAULT_BRANCH_ID = 1
 
 
 async def main():
-    alfa_client = AlfaClient(
-        hostname=HOSTNAME,
-        email=EMAIL,
-        api_key=API_KEY,
-        branch_id=BRANCH_ID,
+    client = AlfaClient(
+        hostname=ALFACRM_BASE_URL,
+        email=ALFACRM_EMAIL,
+        api_key=ALFACRM_API_KEY,
+        branch_id=ALFACRM_DEFAULT_BRANCH_ID,
     )
     try:
-        # Check auth (Optionaly)
-        if not await alfa_client.check_auth():
-            print('Authentification error')
+        # Проверка авторизации (опционально)
+        if not await client.check_auth():
+            print("Auth error")
             return
-        # Get branches
-        branches = await alfa_client.branch.list(page=0, count=20)
 
-        # Edit branch
-        for branch in branches:
-            branch.name = f'{branch.name} - Edited'
-            # Save branch
-            await alfa_client.branch.save(branch)
+        # Пример: получить урок с id=1
+        lesson = await client.lesson.get(1)
+        print(lesson)
 
-        # Create location
-        location = Location(
-            branch_id=1,
-            is_active=True,
-            name='New location',
-        )
-        await alfa_client.location.save(location)
-
+        # Пример: изменить и сохранить филиалы
+        branches = await client.branch.list(page=0, count=20)
+        for b in branches:
+            b.name = f"{b.name} - Edited"
+            await client.branch.save(b)
     finally:
-        # Close session
-        await alfa_client.close()
+        await client.close()
 
 
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())  # For Windows
-asyncio.run(main())
-
-
+if __name__ == "__main__":
+    # На Windows может понадобиться политика цикла событий
+    # import asyncio; asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    asyncio.run(main())
 ```
 
-## Paginator
+## Клиент и аутентификация
+
+- Параметры клиента: `hostname`, `email`, `api_key`, `branch_id`.
+- Токен авторизации обновляется автоматически через `AuthManager`.
+- Метод `check_auth()` возвращает `True/False` без исключений.
+- Закрывайте соединение вызовом `await client.close()`.
+
+## Операции с сущностями
+
+Каждая сущность доступна через менеджер, например `client.customer`, `client.branch` и т.д.
+
+- list: `items = await client.customer.list(page=0, count=100, **filters)`
+- get: `customer = await client.customer.get(123)`
+- save: `await client.customer.save(model)` — создаёт или обновляет по наличию `id` в модели
+
+Модели — это Pydantic‑классы (v2). Метод `serialize()` формирует JSON‑совместимый payload; поля дат/времени преобразуются автоматически.
+
+## Пагинация
+
+Асинхронный итератор страниц:
 
 ```python
-# Get all entities
-for page in alfa_client. < object >.get_paginator():
-    objects = page.items
+async for page in client.customer.paginator(page_size=100, is_study=True):
+    for customer in page.items:
+        print(customer.id, customer.name)
 ```
 
-## Custom fields
+Где `page.items` — элементы текущей страницы, `page.total` — всего записей, `page.count` — элементов на странице.
 
-To work with custom fields, do the following
+## Кастомные модели (пользовательские поля)
+
+Вы можете расширять встроенные модели и подменять их в менеджерах.
 
 ```python
-from aioalfacrm import entities
-from aioalfacrm import fields
-from typing import Optional
+from alfacrm import AlfaClient, managers
+from alfacrm.entities import Customer
 
 
-# Extend existing model
-class CustomCustomer(entities.Customer):
-    custom_field: Optional[int] = fields.Integer()
-
-    # For IDE init support
-    def __init__(
-            self,
-            custom_field: Optional[int] = None,
-            *args,
-            **kwargs,
-    ):
-        super(CustomCustomer, self).__init__(custom_field=custom_field, *args, **kwargs)
-
-
-# Create custom alfa client with new model
-from aioalfacrm import AlfaClient
-from aioalfacrm import managers
+class CustomCustomer(Customer):
+    custom_field: int | None = None
 
 
 class CustomAlfaClient(AlfaClient):
-
     def __init__(self, *args, **kwargs):
-        super(CustomAlfaClient, self).__init__(*args, **kwargs)
-
+        super().__init__(*args, **kwargs)
+        # Подменяем модель в соответствующем менеджере
         self.customer = managers.Customer(
             api_client=self.api_client,
             entity_class=CustomCustomer,
         )
-
-
-# Create custom alfa client
-import asyncio
-
-HOSTNAME = 'demo.s20.online'
-EMAIL = 'api-email@email.example'
-API_KEY = 'user-api-token'
-BRANCH_ID = 1
-
-
-async def main():
-    alfa_client = CustomAlfaClient(hostname=HOSTNAME, email=EMAIL, api_key=API_KEY, branch_id=BRANCH_ID)
-    try:
-        customers = await alfa_client.customer.list()
-        for customer in customers:
-            print(customer.custom_field)
-    finally:
-        await alfa_client.close()
-
-
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())  # For Windows
-asyncio.run(main())
 ```
+
+## Доступные сущности
+
+- Branch, Location, Customer, StudyStatus, Subject
+- LeadStatus, LeadSource, LeadReject, Communication, Log
+- Group, Lesson, LessonType, RegularLesson, Room, Task
+- Tariff, CustomerTariff, Discount
+- Pay, PayAccount, PayItem, PayItemCategory
+- CGI
+
+Доступ к ним через одноимённые менеджеры `client.<name>`.
+
+## Обработка ошибок
+
+Исключения (все наследуются от `ApiException`):
+
+- BadRequest (400), Unauthorized (401), Forbidden (403), NotFound (404), MethodNotAllowed (405)
+
+Полезно оборачивать вызовы в `try/except` при интеграции и логировать `str(e)`.
+
+## Примечания
+
+- `hostname` можно указывать как короткое имя (`demo`) или полный хост/URL — клиент приведёт к `*.s20.online` автоматически.
+- Параметр `branch_id` включается в путь `v2api/{branch_id}/...` (глобальные методы вызываются без него).
