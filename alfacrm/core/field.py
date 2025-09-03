@@ -9,7 +9,7 @@ class BaseField(metaclass=abc.ABCMeta):
 
     def __init__(
         self,
-        base: "BaseField" | None = None,
+        base: typing.Optional["BaseField"] = None,
         default: typing.Any = None,
         alias: str | None = None,
         editable: bool = True,
@@ -24,7 +24,7 @@ class BaseField(metaclass=abc.ABCMeta):
             self.alias = name
 
     def set_value(self, instance, value: typing.Any, parent=None):
-        value = self.deserialzie(value)
+        value = self.deserialize(value)
         instance.values[self.alias] = value
 
     def get_value(self, instance):
@@ -44,7 +44,7 @@ class BaseField(metaclass=abc.ABCMeta):
         pass  # pragma: no cover
 
     @abc.abstractmethod
-    def deserialzie(self, value: typing.Any) -> typing.Any:
+    def deserialize(self, value: typing.Any) -> typing.Any:
         pass  # pragma: no cover
 
     def export(self, instance):

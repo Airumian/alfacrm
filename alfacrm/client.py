@@ -56,7 +56,9 @@ class AlfaClient:
         self.room = managers.Room(self.api_client, entities.Room)
         self.task = managers.Task(self.api_client, entities.Task)
         self.tariff = managers.Tariff(self.api_client, entities.Tariff)
-        self.regular_lesson = managers.RegularLesson(self.api_client, entities.Tariff)
+        self.regular_lesson = managers.RegularLesson(
+            self.api_client, entities.RegularLesson
+        )
         self.pay_item = managers.PayItem(self.api_client, entities.PayItem)
         self.pay_item_category = managers.PayItemCategory(
             self.api_client, entities.PayItemCategory

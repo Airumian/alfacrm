@@ -5,7 +5,7 @@ class Task(AlfaModel):
     id: int | None = None
     company_id: int | None = None
     branch_ids: list[int] | None = None
-    user_id: list[int] | None = None
+    user_id: int | None = None
     assigned_ids: list[int] | None = None
     group_ids: list[int] | None = None
     customer_ids: list[int] | None = None

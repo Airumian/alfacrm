@@ -14,5 +14,5 @@ class Lesson(AlfaModel):
     teacher_ids: list[int] | None = None
     customer_ids: list[int] | None = None
     group_ids: list[int] | None = None
-    streaming: bool | None = None
+    streaming: bool | list[str] | None = None
     note: str | None = None

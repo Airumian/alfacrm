@@ -1,52 +1,27 @@
 import asyncio
+import os
 
-from alfacrm import AlfaClient  # Import client for work with alfacrm api
-from alfacrm.entities import Customer  # Import customer entity class
+from alfacrm import AlfaClient
 
-HOSTNAME = "demo.s20.online"
-EMAIL = "demo-email@email.com"
-API_KEY = "user-api-token"
-BRANCH_ID = 1
+ALFACRM_API_KEY = os.getenv("ALFACRM_API_KEY")
+ALFACRM_EMAIL = os.getenv("ALFACRM_EMAIL")
+ALFACRM_BASE_URL = os.getenv("ALFACRM_BASE_URL")
+ALFACRM_DEFAULT_BRANCH_ID = 1
 
 
 async def main():
-    # Create AlfaClient object
     client = AlfaClient(
-        hostname=HOSTNAME,
-        email=EMAIL,
-        api_key=API_KEY,
-        branch_id=BRANCH_ID,
+        hostname=ALFACRM_BASE_URL,
+        email=ALFACRM_EMAIL,
+        api_key=ALFACRM_API_KEY,
+        branch_id=ALFACRM_DEFAULT_BRANCH_ID,
     )
     try:
-        # Check auth (Optionaly)
-        if not await client.check_auth():
-            raise RuntimeError("Auth error")
-
-        # Get list of entities
-        customers = await client.customer.list()
-        # Get one row by id
-        customer = await client.customer.get(id_=5013)
-
-        # Create new entity
-        new_customer = Customer(
-            name="Customer",
-            email=["customer@email.email"],
-            branch_ids=[12],
-            is_study=True,
-            legal_type=1,
-        )
-        # Create model in alfacrm
-        created_customer = await client.customer.save(new_customer)
-        print(created_customer.id)  # Seted id from alfa crm
-
-        created_customer.name = "Edited customer"
-        # Update model in alfacrm
-        update_customer = await client.customer.save(created_customer)
+        await client.check_auth()
+        print(await client.lesson.get(1))
     finally:
-        # Close session
         await client.close()
 
 
 if __name__ == "__main__":
-    # Run async main with asyncio
     asyncio.run(main())

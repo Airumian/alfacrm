@@ -56,7 +56,7 @@ class AuthManager:
             data = check_response(
                 response.status, await response.text(), response.request_info
             )
-            self._token = data["token"]
+            # Do not store raw string into self._token; return Token object
             return Token(
                 value=data["token"],
                 expired_at=time.time() + self._token_lifetime,
