@@ -1,12 +1,10 @@
-from typing import List, Optional
-
 from .base import AlfaModel
 
 
 class PayItem(AlfaModel):
-    id: Optional[int] = None
-    branch_ids: Optional[List[int]] = None
-    category_id: Optional[int] = None
-    pay_type_ids: Optional[List[int]] = None
-    name: Optional[str] = None
-    weight: Optional[int] = None
+    id: int | None = None
+    branch_ids: list[int] | None = None
+    category_id: int | None = None
+    pay_type_ids: list[int] | None = None
+    name: str | None = None
+    weight: int | None = None

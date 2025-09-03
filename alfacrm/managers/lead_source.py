@@ -12,11 +12,11 @@ class LeadSource(EntityManager, typing.Generic[T]):
         self,
         page: int = 0,
         count: int = 100,
-        name: typing.Optional[str] = None,
-        code: typing.Optional[str] = None,
-        is_enabled: typing.Optional[bool] = None,
+        name: str | None = None,
+        code: str | None = None,
+        is_enabled: bool | None = None,
         **kwargs,
-    ) -> typing.List[T]:
+    ) -> list[T]:
         """
         Get list customers
         :param page: page

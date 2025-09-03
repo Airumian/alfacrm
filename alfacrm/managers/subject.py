@@ -12,9 +12,9 @@ class Subject(EntityManager, typing.Generic[T]):
         self,
         page: int = 0,
         count: int = 100,
-        name: typing.Optional[str] = None,
+        name: str | None = None,
         **kwargs,
-    ) -> typing.List[T]:
+    ) -> list[T]:
         """
         Get list customers
         :param page: page

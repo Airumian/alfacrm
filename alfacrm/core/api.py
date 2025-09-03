@@ -1,5 +1,5 @@
-import typing
 from enum import Enum
+from typing import Any
 
 import aiohttp
 
@@ -35,8 +35,8 @@ class ApiClient:
     async def request(
         self,
         url: str,
-        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
-        params: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        json: dict[str, Any] | None = None,
+        params: dict[str, Any] | None = None,
     ):
         """
         Request on API

@@ -4,17 +4,9 @@ from alfacrm import AlfaClient  # Import client for work with alfacrm api
 from alfacrm.entities import Customer  # Import customer entity class
 
 HOSTNAME = "demo.s20.online"
-EMAIL = "api-email@email.example"
+EMAIL = "demo-email@email.com"
 API_KEY = "user-api-token"
-BRANCH_ID = 12
-
-HOSTNAME = "ligarobotov.s20.online"
-EMAIL = "dev-delta-nsk@ligarobotov.ru"
-API_KEY = "07ec70a0-d2e9-11ea-a4f7-0cc47ae3c526"
-BRANCH_ID = 12
-
-EMAIL = "alfa-api@ligarobotov.ru"
-API_KEY = "3bb0672c-85f5-11e8-8a06-d8cb8abf9305"
+BRANCH_ID = 1
 
 
 async def main():

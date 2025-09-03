@@ -10,13 +10,13 @@ class Communication(EntityManager, typing.Generic[T]):
 
     async def list(
         self,
-        related_class: typing.Optional[str] = None,
-        related_id: typing.Optional[int] = None,
+        related_class: str | None = None,
+        related_id: int | None = None,
         page: int = 0,
         count: int = 100,
         *args,
         **kwargs,
-    ) -> typing.List[T]:
+    ) -> list[T]:
         result = await self._list(
             page=page,
             count=count,
@@ -32,8 +32,8 @@ class Communication(EntityManager, typing.Generic[T]):
     async def get(
         self,
         id_: int,
-        related_class: typing.Optional[str] = None,
-        related_id: typing.Optional[int] = None,
+        related_class: str | None = None,
+        related_id: int | None = None,
         **kwargs,
     ) -> T:
         result = await self._get(
@@ -50,8 +50,8 @@ class Communication(EntityManager, typing.Generic[T]):
     async def save(
         self,
         model: T,
-        related_class: typing.Optional[str] = None,
-        related_id: typing.Optional[int] = None,
+        related_class: str | None = None,
+        related_id: int | None = None,
     ) -> T:
         result = await self._save(
             params={

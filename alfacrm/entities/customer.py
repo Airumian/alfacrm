@@ -1,37 +1,35 @@
-from typing import List, Optional
-
 from .base import AlfaDate, AlfaDateTime, AlfaModel
 
 
 class Customer(AlfaModel):
-    id: Optional[int] = None
-    name: Optional[str] = None
-    branch_ids: Optional[List[int]] = None
-    teacher_ids: Optional[List[int]] = None
-    is_study: Optional[bool] = None
-    study_status_id: Optional[int] = None
-    lead_status_id: Optional[int] = None
-    lead_reject_id: Optional[int] = None
-    lead_source_id: Optional[int] = None
-    assigned_id: Optional[int] = None
-    legal_type: Optional[int] = None
-    legal_name: Optional[str] = None
-    company_id: Optional[int] = None
+    id: int | None = None
+    name: str | None = None
+    branch_ids: list[int] | None = None
+    teacher_ids: list[int] | None = None
+    is_study: bool | None = None
+    study_status_id: int | None = None
+    lead_status_id: int | None = None
+    lead_reject_id: int | None = None
+    lead_source_id: int | None = None
+    assigned_id: int | None = None
+    legal_type: int | None = None
+    legal_name: str | None = None
+    company_id: int | None = None
     dob: AlfaDate = None
-    balance: Optional[float] = None
-    balance_base: Optional[float] = None
-    balance_bonus: Optional[float] = None
+    balance: float | None = None
+    balance_base: float | None = None
+    balance_bonus: float | None = None
     last_attend_date: AlfaDate = None
     b_date: AlfaDateTime = None
     e_date: AlfaDate = None
-    paid_count: Optional[int] = None
-    paid_lesson_count: Optional[int] = None
+    paid_count: int | None = None
+    paid_lesson_count: int | None = None
     paid_lesson_date: AlfaDateTime = None
     next_lesson_date: AlfaDateTime = None
     paid_till: AlfaDateTime = None
-    phone: Optional[List[str]] = None
-    email: Optional[List[str]] = None
-    web: Optional[List[str]] = None
-    addr: Optional[List[str]] = None
-    note: Optional[str] = None
-    color: Optional[str] = None
+    phone: list[str] | None = None
+    email: list[str] | None = None
+    web: list[str] | None = None
+    addr: list[str] | None = None
+    note: str | None = None
+    color: str | None = None

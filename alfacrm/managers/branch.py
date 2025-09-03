@@ -12,9 +12,9 @@ class Branch(EntityManager, typing.Generic[T]):
         self,
         page: int = 0,
         count: int = 100,
-        name: typing.Optional[str] = None,
-        is_active: typing.Optional[bool] = None,
-        subject_ids: typing.Optional[typing.List[int]] = None,
+        name: str | None = None,
+        is_active: bool | None = None,
+        subject_ids: list[int] | None = None,
         **kwargs,
     ) -> typing.List[T]:
         """

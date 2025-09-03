@@ -1,24 +1,21 @@
-import datetime
-from typing import Optional
-
 from .base import AlfaDate, AlfaModel
 
 
 class Pay(AlfaModel):
-    id: Optional[int] = None
-    branch_id: Optional[int] = None
-    location_id: Optional[int] = None
-    customer_id: Optional[int] = None
-    pay_type_id: Optional[int] = None
-    pay_account_id: Optional[int] = None
-    pay_item_id: Optional[int] = None
-    teacher_id: Optional[int] = None
-    commodity_id: Optional[int] = None
-    ctt_id: Optional[int] = None
+    id: int | None = None
+    branch_id: int | None = None
+    location_id: int | None = None
+    customer_id: int | None = None
+    pay_type_id: int | None = None
+    pay_account_id: int | None = None
+    pay_item_id: int | None = None
+    teacher_id: int | None = None
+    commodity_id: int | None = None
+    ctt_id: int | None = None
     document_date: AlfaDate = None
-    income: Optional[float] = None
-    payer_name: Optional[str] = None
-    note: Optional[str] = None
-    is_confirmed: Optional[bool] = None
-    custom_md_order: Optional[str] = None
-    custom_order_description: Optional[str] = None
+    income: float | None = None
+    payer_name: str | None = None
+    note: str | None = None
+    is_confirmed: bool | None = None
+    custom_md_order: str | None = None
+    custom_order_description: str | None = None

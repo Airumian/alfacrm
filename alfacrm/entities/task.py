@@ -1,24 +1,22 @@
-from typing import List, Optional
-
 from .base import AlfaDate, AlfaDateTime, AlfaModel
 
 
 class Task(AlfaModel):
-    id: Optional[int] = None
-    company_id: Optional[int] = None
-    branch_ids: Optional[List[int]] = None
-    user_id: Optional[int] = None
-    assigned_ids: Optional[List[int]] = None
-    group_ids: Optional[List[int]] = None
-    customer_ids: Optional[List[int]] = None
-    title: Optional[str] = None
-    text: Optional[str] = None
-    is_archive: Optional[bool] = None
+    id: int | None = None
+    company_id: int | None = None
+    branch_ids: list[int] | None = None
+    user_id: list[int] | None = None
+    assigned_ids: list[int] | None = None
+    group_ids: list[int] | None = None
+    customer_ids: list[int] | None = None
+    title: str | None = None
+    text: str | None = None
+    is_archive: bool | None = None
     created_at: AlfaDateTime = None
-    is_done: Optional[bool] = None
-    is_private: Optional[bool] = None
+    is_done: bool | None = None
+    is_private: bool | None = None
     due_date: AlfaDate = None
     done_date: AlfaDateTime = None
-    is_public_entry: Optional[bool] = None
-    is_notify: Optional[bool] = None
-    priority: Optional[int] = None
+    is_public_entry: bool | None = None
+    is_notify: bool | None = None
+    priority: int | None = None

@@ -12,10 +12,10 @@ class LeadStatus(EntityManager, typing.Generic[T]):
         self,
         page: int = 0,
         count: int = 100,
-        name: typing.Optional[str] = None,
-        is_enabled: typing.Optional[bool] = None,
+        name: str | None = None,
+        is_enabled: bool | None = None,
         **kwargs,
-    ) -> typing.List[T]:
+    ) -> list[T]:
         """
         Get list lead statuses
         :param name: filter by name

@@ -1,15 +1,13 @@
-from typing import Optional
-
 from pydantic import Field
 
 from .base import AlfaDateTime, AlfaModel
 
 
 class Communication(AlfaModel):
-    id: Optional[int] = None
-    type_id: Optional[int] = None
-    related_class: Optional[str] = Field(default=None, alias="class")
-    related_id: Optional[int] = None
-    user_id: Optional[int] = None
+    id: int | None = None
+    type_id: int | None = None
+    related_class: str | None = Field(default=None, alias="class")
+    related_id: int | None = None
+    user_id: int | None = None
     added: AlfaDateTime = None
-    comment: Optional[str] = None
+    comment: str | None = None

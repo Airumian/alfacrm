@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import datetime as _dt
-from typing import Any, Dict, Optional
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 from pydantic.functional_validators import BeforeValidator
@@ -72,7 +72,7 @@ AlfaDateTime = Annotated[_dt.datetime | None, BeforeValidator(_parse_datetime)]
 AlfaTime = Annotated[_dt.time | None, BeforeValidator(_parse_time)]
 
 
-def _parse_int(value: Any) -> Optional[int]:
+def _parse_int(value: Any) -> int | None:
     if value is None or value == "":
         return None
     try:
@@ -81,7 +81,7 @@ def _parse_int(value: Any) -> Optional[int]:
         return value
 
 
-def _parse_float(value: Any) -> Optional[float]:
+def _parse_float(value: Any) -> float | None:
     if value is None or value == "":
         return None
     try:
@@ -90,13 +90,13 @@ def _parse_float(value: Any) -> Optional[float]:
         return value
 
 
-def _parse_bool(value: Any) -> Optional[bool]:
+def _parse_bool(value: Any) -> bool | None:
     if value is None:
         return None
     return bool(value)
 
 
-def _parse_dict(value: Any) -> Optional[Dict[str, Any]]:
+def _parse_dict(value: Any) -> dict[str, Any] | None:
     if value is None:
         return None
     if isinstance(value, dict):
@@ -120,7 +120,7 @@ def _parse_dict(value: Any) -> Optional[Dict[str, Any]]:
 AlfaInt = Annotated[int | None, BeforeValidator(_parse_int)]
 AlfaFloat = Annotated[float | None, BeforeValidator(_parse_float)]
 AlfaBool = Annotated[bool | None, BeforeValidator(_parse_bool)]
-AlfaDict = Annotated[Dict[str, Any] | None, BeforeValidator(_parse_dict)]
+AlfaDict = Annotated[dict[str, Any] | None, BeforeValidator(_parse_dict)]
 
 
 class AlfaModel(BaseModel):

@@ -12,8 +12,8 @@ class CGI(EntityManager, typing.Generic[T]):
         self,
         page: int = 0,
         count: int = 100,
-        customer_id: typing.Optional[int] = None,
-        group_id: typing.Optional[int] = None,
+        customer_id: int | None = None,
+        group_id: int | None = None,
         *args,
         **kwargs,
     ) -> typing.List[T]:
@@ -35,8 +35,8 @@ class CGI(EntityManager, typing.Generic[T]):
     async def get(
         self,
         id_: int,
-        customer_id: typing.Optional[int] = None,
-        group_id: typing.Optional[int] = None,
+        customer_id: int | None = None,
+        group_id: int | None = None,
         **kwargs,
     ) -> T:
         if customer_id is None and group_id is None:

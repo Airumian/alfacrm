@@ -1,11 +1,9 @@
-from typing import Optional
-
 from .base import AlfaModel
 
 
 class Location(AlfaModel):
-    id: Optional[int] = None
-    branch_id: Optional[int] = None
-    is_active: Optional[bool] = None
-    name: Optional[str] = None
-    weight: Optional[int] = None
+    id: int | None = None
+    branch_id: int | None = None
+    is_active: bool | None = None
+    name: str | None = None
+    weight: int | None = None

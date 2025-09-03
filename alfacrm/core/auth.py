@@ -1,5 +1,4 @@
 import time
-import typing
 
 import aiohttp as aiohttp
 
@@ -81,7 +80,7 @@ class AuthManager:
             await self.refresh_token()
         return self._token
 
-    async def get_auth_headers(self) -> typing.Dict[str, str]:
+    async def get_auth_headers(self) -> dict[str, str]:
         """
         Make auth header
         :return: auth header

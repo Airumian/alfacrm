@@ -1,14 +1,15 @@
 import pathlib
 import sys
-from typing import Any, Dict, List, Optional
-
-root_dir = pathlib.Path(".").resolve()
-sys.path.append(str(root_dir))
+from typing import Any, Optional
 
 import aiohttp
 import pytest
 
 from alfacrm.core import ApiClient, AuthManager
+
+root_dir = pathlib.Path(".").resolve()
+sys.path.append(str(root_dir))
+
 
 DEFAULT_HOST = "demo.s20.online"
 DEFAULT_EMAIL = "test@test.test"
@@ -18,9 +19,9 @@ DEFAULT_BRANCH_ID = 1
 
 def make_response(
     success: bool = True,
-    errors: Optional[List[str]] = None,
-    model: Dict[str, Any] = None,
-) -> Dict:
+    errors: Optional[list[str]] = None,
+    model: dict[str, Any] = None,
+) -> dict:
     if errors is None:
         errors = []
     if model is None:
@@ -40,7 +41,10 @@ async def session():
 @pytest.fixture(autouse=True)
 def add_auth_request(aresponses):
     aresponses.add(
-        "demo.s20.online", "/v2api/auth/login", "POST", {"token": "api-token"}
+        "demo.s20.online",
+        "/v2api/auth/login",
+        "POST",
+        {"token": "api-token"},
     )
 
 
@@ -60,5 +64,5 @@ def api_client(auth_manager: AuthManager, session):
         hostname=DEFAULT_HOST,
         branch_id=DEFAULT_BRANCH_ID,
         auth_manager=auth_manager,
-        session=session,  # noqa
+        session=session,
     )

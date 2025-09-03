@@ -1,10 +1,8 @@
-from typing import Any, Dict, Optional
-
-from .base import AlfaDateTime, AlfaModel, AlfaDict
+from .base import AlfaDateTime, AlfaDict, AlfaModel
 
 
 class Log(AlfaModel):
-    id: Optional[int] = None
+    id: int | None = None
     entity: str
     entity_id: int
     user_id: int

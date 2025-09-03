@@ -10,12 +10,12 @@ class CustomerTariff(EntityManager, typing.Generic[T]):
 
     async def list(
         self,
-        customer_id: typing.Optional[int] = None,
+        customer_id: int | None = None,
         page: int = 0,
         count: int = 100,
         *args,
         **kwargs,
-    ) -> typing.List[T]:
+    ) -> list[T]:
         if customer_id is None:
             raise ValueError("customer_id is not filled")
         result = await self._list(
@@ -32,7 +32,7 @@ class CustomerTariff(EntityManager, typing.Generic[T]):
     async def get(
         self,
         id_: int,
-        customer_id: typing.Optional[int] = None,
+        customer_id: int | None = None,
         **kwargs,
     ) -> T:
         if customer_id is None:
@@ -50,7 +50,7 @@ class CustomerTariff(EntityManager, typing.Generic[T]):
     async def save(
         self,
         model: T,
-        customer_id: typing.Optional[int] = None,
+        customer_id: int | None = None,
     ) -> T:
         result = await self._save(
             params={

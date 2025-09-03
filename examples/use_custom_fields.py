@@ -1,7 +1,7 @@
 import asyncio
-from typing import Optional
 
-from alfacrm import AlfaClient, entities, fields, managers
+from alfacrm import AlfaClient, managers
+from alfacrm.entities import Customer
 
 HOSTNAME = "demo.s20.online"
 EMAIL = "api-email@email.example"
@@ -10,16 +10,11 @@ BRANCH_ID = 1
 
 
 # Extend existing model
-class CustomCustomer(entities.Customer):
-    custom_field: Optional[int] = fields.Integer()
+class CustomCustomer(Customer):
+    custom_field: int | None
 
     # For IDE init support
-    def __init__(
-        self,
-        custom_field: Optional[int] = None,
-        *args,
-        **kwargs,
-    ):
+    def __init__(self, custom_field: int | None = None, *args, **kwargs):
         super(CustomCustomer, self).__init__(custom_field=custom_field, *args, **kwargs)
 
 
@@ -31,7 +26,8 @@ class CustomAlfaClient(AlfaClient):
         super(CustomAlfaClient, self).__init__(*args, **kwargs)
 
         self.customer = managers.Customer(
-            api_client=self.api_client, model_class=CustomCustomer
+            api_client=self.api_client,
+            model_class=CustomCustomer,
         )
 
 
@@ -40,7 +36,10 @@ class CustomAlfaClient(AlfaClient):
 
 async def main():
     alfa_client = CustomAlfaClient(
-        hostname=HOSTNAME, email=EMAIL, api_key=API_KEY, branch_id=BRANCH_ID
+        hostname=HOSTNAME,
+        email=EMAIL,
+        api_key=API_KEY,
+        branch_id=BRANCH_ID,
     )
     try:
         customers = await alfa_client.customer.list()
@@ -50,5 +49,4 @@ async def main():
         await alfa_client.close()
 
 
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())  # For Windows
 asyncio.run(main())

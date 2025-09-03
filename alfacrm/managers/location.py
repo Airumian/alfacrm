@@ -12,10 +12,10 @@ class Location(EntityManager, typing.Generic[T]):
         self,
         page: int = 0,
         count: int = 100,
-        name: typing.Optional[str] = None,
-        is_active: typing.Optional[bool] = None,
+        name: str | None = None,
+        is_active: bool | None = None,
         **kwargs,
-    ) -> typing.List[T]:
+    ) -> list[T]:
         """
         Get list locations
         :param name: filter by name

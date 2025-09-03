@@ -1,19 +1,17 @@
-from typing import List, Optional
-
 from .base import AlfaDate, AlfaDateTime, AlfaModel
 
 
 class CustomerTariff(AlfaModel):
-    id: Optional[int] = None
-    customer_id: Optional[int] = None
-    tariff_id: Optional[int] = None
-    subject_ids: Optional[List[int]] = None
-    lesson_type_ids: Optional[List[int]] = None
-    is_separate_balance: Optional[bool] = None
-    balance: Optional[float] = None
-    paid_count: Optional[int] = None
+    id: int | None = None
+    customer_id: int | None = None
+    tariff_id: int | None = None
+    subject_ids: list[int] | None = None
+    lesson_type_ids: list[int] | None = None
+    is_separate_balance: bool | None = None
+    balance: float | None = None
+    paid_count: int | None = None
     paid_till: AlfaDateTime = None
-    note: Optional[str] = None
+    note: str | None = None
     b_date: AlfaDate = None
     e_date: AlfaDate = None
-    paid_lesson_count: Optional[int] = None
+    paid_lesson_count: int | None = None

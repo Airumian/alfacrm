@@ -1,5 +1,3 @@
-from typing import Optional
-
 import aiohttp
 
 
@@ -18,7 +16,7 @@ class FieldNotEditable(AioAlfaException):
 class ApiException(AioAlfaException):
     code = 500
 
-    def __init__(self, request_info: Optional[aiohttp.RequestInfo] = None, **kwargs):
+    def __init__(self, request_info: aiohttp.RequestInfo | None = None, **kwargs):
         super(ApiException, self).__init__(**kwargs)
         self._request_info = request_info
 

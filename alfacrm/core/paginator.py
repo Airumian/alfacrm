@@ -13,10 +13,10 @@ class Paginator(typing.Generic[T]):
         alfa_object: "entity_manager.EntityManager",
         start_page: int = 0,
         page_size: int = 20,
-        filters: typing.Dict[str, typing.Any] | None = None,
+        filters: dict[str, typing.Any] | None = None,
     ):
         self._page_number = start_page
-        self._page: typing.Optional[Page[T]] = None
+        self._page: Page[T] | None = None
         self._total = 0
         self._page_size = page_size
         if filters is None:

@@ -12,11 +12,11 @@ class Customer(EntityManager, typing.Generic[T]):
         self,
         page: int = 0,
         count: int = 100,
-        name: typing.Optional[str] = None,
-        is_study: typing.Optional[bool] = None,
-        legal_type: typing.Optional[int] = None,
+        name: str | None = None,
+        is_study: bool | None = None,
+        legal_type: int | None = None,
         **kwargs,
-    ) -> typing.List[T]:
+    ) -> list[T]:
         """
         Get list customers
         :param name: filter by name

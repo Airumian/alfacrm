@@ -107,4 +107,4 @@ class BaseAlfaEntity(metaclass=AlfaEntityMeta):
 
 
 class AlfaEntity(BaseAlfaEntity):
-    id: typing.Optional[int] = Integer()
+    id: int | None

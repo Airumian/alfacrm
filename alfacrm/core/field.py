@@ -5,9 +5,7 @@ from .exceptions import FieldNotEditable
 
 
 class BaseField(metaclass=abc.ABCMeta):
-    """
-    Base field
-    """
+    """Base field"""
 
     def __init__(
         self,
