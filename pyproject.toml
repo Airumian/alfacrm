@@ -1,6 +1,6 @@
 [project]
 name = "alfacrm"
-version = "0.1.0"
+version = "0.1.1"
 description = "Is an asynchronous implementation for AlfaCRM API"
 readme = "README.md"
 requires-python = ">=3.12.7"
@@ -8,3 +8,15 @@ dependencies = [
     "aiohttp>=3.12.15",
     "pydantic>=2.11.7",
 ]
+
+[project.urls]
+Homepage = "https://github.com/Airumian/alfacrm"
+Repository = "https://github.com/Airumian/alfacrm"
+"Issue Tracker" = "https://github.com/Airumian/alfacrm/issues"
+
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["alfacrm"]
