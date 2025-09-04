@@ -1,6 +1,6 @@
 [project]
 name = "alfacrm"
-version = "0.1.1"
+version = "0.1.2"
 description = "Is an asynchronous implementation for AlfaCRM API"
 readme = "README.md"
 requires-python = ">=3.12.7"
