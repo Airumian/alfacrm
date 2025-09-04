@@ -1,6 +1,6 @@
 [project]
 name = "alfacrm"
-version = "0.1.2"
+version = "0.1.3"
 description = "Is an asynchronous implementation for AlfaCRM API"
 readme = "README.md"
 requires-python = ">=3.12.7"
@@ -20,3 +20,6 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["alfacrm"]
+
+[tool.hatch.build.targets.wheel.package-data]
+"alfacrm" = ["py.typed"]
