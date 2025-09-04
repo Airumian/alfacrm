@@ -1,5 +1,4 @@
-import typing
-from typing import Any, Dict
+from typing import Any, ClassVar, Generic, List, Mapping, Type, TypeVar, cast
 
 from .api import ApiClient, ApiMethod
 from .exceptions import NotFound
@@ -11,7 +10,7 @@ from .utils import prepare_dict
 class BaseManager:
     """Class for description API object"""
 
-    object_name = None
+    object_name: ClassVar[str] = ""
 
     def __init__(self, api_client: ApiClient):
         self._api_client = api_client
@@ -19,9 +18,9 @@ class BaseManager:
     async def _get_result(
         self,
         api_method: ApiMethod,
-        params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> typing.Dict[str, typing.Any]:
+        params: dict[str, Any] | None = None,
+        json: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
         params = prepare_dict(params)
 
         if api_method == ApiMethod.LIST:
@@ -35,9 +34,9 @@ class BaseManager:
         self,
         page: int,
         count: int = 100,
-        params: typing.Dict[str, typing.Any] | None = None,
+        params: dict[str, Any] | None = None,
         **kwargs,
-    ) -> typing.Dict[str, typing.Any]:
+    ) -> dict[str, Any]:
         """
         Get objects list from api
         :param page: number of page
@@ -60,9 +59,9 @@ class BaseManager:
     async def _get(
         self,
         id_: int,
-        params: typing.Dict[str, typing.Any] | None = None,
+        params: dict[str, Any] | None = None,
         **kwargs,
-    ) -> typing.Dict[str, typing.Any]:
+    ) -> dict[str, Any]:
         """
         Get one object from api
         :param id_: object id
@@ -80,9 +79,9 @@ class BaseManager:
 
     async def _create(
         self,
-        params: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        params: dict[str, Any] | None = None,
         **kwargs,
-    ) -> typing.Dict[str, typing.Any]:
+    ) -> dict[str, Any]:
         """
         Create object in api
         :param kwargs: fields
@@ -98,9 +97,9 @@ class BaseManager:
     async def _update(
         self,
         id_: int,
-        params: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        params: dict[str, Any] | None = None,
         **kwargs,
-    ) -> typing.Dict[str, typing.Any]:
+    ) -> dict[str, Any]:
         """
         Update object in api
         :param id_: object id
@@ -116,78 +115,56 @@ class BaseManager:
 
     async def _save(
         self,
-        params: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        params: dict[str, Any] | None = None,
         **kwargs,
-    ) -> typing.Dict[str, typing.Any]:
+    ) -> dict[str, Any]:
         if "id" in kwargs:
             return await self._update(kwargs.pop("id"), params=params, **kwargs)
         else:
             return await self._create(params=params, **kwargs)
 
 
-T = typing.TypeVar("T")
+T = TypeVar("T")
 
 
-class EntityManager(BaseManager, typing.Generic[T]):
-    def __init__(self, api_client: ApiClient, entity_class: typing.Type[T], **kwargs):
+class EntityManager(BaseManager, Generic[T]):
+    def __init__(self, api_client: ApiClient, entity_class: Type[T], **kwargs):
         super(EntityManager, self).__init__(api_client=api_client)
         self._entity_class = entity_class
 
-    async def list(
-        self, page: int = 0, count: int = 100, *args, **kwargs
-    ) -> typing.List[T]:
+    async def list(self, page: int = 0, count: int = 100, *args, **kwargs) -> List[T]:
         raw_data = await self._list(page, count, **kwargs)
         return self._result_to_entities(raw_data)
 
-    async def get(
-        self,
-        id_: int,
-        **kwargs,
-    ) -> T:
+    async def get(self, id_: int, **kwargs) -> T:
         raw_data = await self._get(id_, **kwargs)
         return self._result_to_entity(raw_data)
 
-    async def save(
-        self,
-        model: T,
-        **url_params: Any,
-    ) -> T:
-        """
-        Create or update an entity. Accepts either legacy AlfaEntity, Pydantic v2 model,
-        or plain dict-like. Extra kwargs are passed as URL params (e.g., customer_id).
-        """
-        payload: Dict[str, Any]
+    async def save(self, model: T, **url_params: Any) -> T:
+        payload: dict[str, Any]
         if hasattr(model, "serialize") and callable(getattr(model, "serialize")):
-            payload = typing.cast(Dict[str, Any], model.serialize())
+            payload = cast(dict[str, Any], model.serialize())
         elif hasattr(model, "model_dump"):
-            payload = typing.cast(
-                Dict[str, Any],
+            payload = cast(
+                dict[str, Any],
                 model.model_dump(by_alias=True, exclude_none=True, mode="json"),
             )
+        elif isinstance(model, Mapping):
+            payload = dict(model)  # теперь типобезопасно
         elif isinstance(model, dict):
-            payload = typing.cast(Dict[str, Any], model)
+            payload = cast(dict[str, Any], model)
         else:
-            try:
-                payload = dict(model)
-            except Exception:
-                raise TypeError("Unsupported model type for save")
+            raise TypeError(
+                "Unsupported model type for save; expected serialize(), model_dump(), or Mapping[str, Any]"
+            )
 
         raw_data = await self._save(params=url_params or None, **payload)
         return self._result_to_entity(raw_data)
 
-    async def page(
-        self,
-        page: int = 0,
-        count: int = 100,
-        **kwargs,
-    ) -> Page[T]:
+    async def page(self, page: int = 0, count: int = 100, **kwargs) -> Page[T]:
         raw_data = await self._list(page, count, **kwargs)
         items = self._result_to_entities(raw_data)
-        return Page(
-            number=page,
-            items=items,
-            total=raw_data["total"],
-        )
+        return Page(number=page, items=items, total=raw_data["total"])
 
     def paginator(
         self,
@@ -202,15 +179,13 @@ class EntityManager(BaseManager, typing.Generic[T]):
             filters=kwargs,
         )
 
-    def _result_to_entities(
-        self, result: typing.Dict[str, typing.Any]
-    ) -> typing.List[T]:
+    def _result_to_entities(self, result: dict[str, Any]) -> List[T]:
         items = result["items"]
         return [self._result_to_entity(item) for item in items]
 
-    def _result_to_entity(self, result: typing.Dict[str, typing.Any]) -> T:
+    def _result_to_entity(self, result: dict[str, Any]) -> T:
         cls = self._entity_class
         model_validate = getattr(cls, "model_validate", None)
         if callable(model_validate):
-            return typing.cast(T, model_validate(result))
-        return typing.cast(T, cls(**result))
+            return cast(T, model_validate(result))
+        return cast(T, cls(**result))

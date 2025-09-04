@@ -1,11 +1,11 @@
-import typing
+from typing import Generic, TypeVar
 
 from alfacrm.core.entity_manager import EntityManager
 
-T = typing.TypeVar("T")
+T = TypeVar("T")
 
 
-class Subject(EntityManager, typing.Generic[T]):
+class Subject(EntityManager[T], Generic[T]):
     object_name = "subject"
 
     async def list(

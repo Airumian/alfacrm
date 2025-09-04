@@ -1,11 +1,11 @@
-import typing
+from typing import Generic, TypeVar
 
 from ..core.entity_manager import EntityManager
 
-T = typing.TypeVar("T")
+T = TypeVar("T")
 
 
-class Customer(EntityManager, typing.Generic[T]):
+class Customer(EntityManager[T], Generic[T]):
     object_name = "customer"
 
     async def list(

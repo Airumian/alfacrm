@@ -1,11 +1,11 @@
-import typing
+from typing import Generic, TypeVar
 
 from ..core.entity_manager import EntityManager
 
-T = typing.TypeVar("T")
+T = TypeVar("T")
 
 
-class LeadSource(EntityManager, typing.Generic[T]):
+class LeadSource(EntityManager[T], Generic[T]):
     object_name = "lead-source"
 
     async def list(

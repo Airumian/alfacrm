@@ -41,36 +41,74 @@ class AlfaClient:
         )
 
         # Set API objects
-        self.branch = managers.Branch(self.api_client, entities.Branch)
-        self.location = managers.Location(self.api_client, entities.Location)
-        self.customer = managers.Customer(self.api_client, entities.Customer)
-        self.study_status = managers.StudyStatus(self.api_client, entities.StudyStatus)
-        self.subject = managers.Subject(self.api_client, entities.Subject)
-        self.lead_status = managers.LeadStatus(self.api_client, entities.LeadStatus)
-        self.lead_source = managers.LeadSource(self.api_client, entities.LeadSource)
-        self.group = managers.Group(self.api_client, entities.Group)
-        self.lesson = managers.Lesson(self.api_client, entities.Lesson)
-        self.room = managers.Room(self.api_client, entities.Room)
-        self.task = managers.Task(self.api_client, entities.Task)
-        self.tariff = managers.Tariff(self.api_client, entities.Tariff)
-        self.regular_lesson = managers.RegularLesson(
-            self.api_client, entities.RegularLesson
+        self.branch: managers.Branch[entities.Branch] = managers.Branch(
+            self.api_client, entities.Branch
         )
-        self.pay_item = managers.PayItem(self.api_client, entities.PayItem)
+        self.location: managers.Location[entities.Location] = managers.Location(
+            self.api_client, entities.Location
+        )
+        self.customer: managers.Customer[entities.Customer] = managers.Customer(
+            self.api_client, entities.Customer
+        )
+        self.study_status: managers.StudyStatus[entities.StudyStatus] = (
+            managers.StudyStatus(self.api_client, entities.StudyStatus)
+        )
+        self.subject: managers.Subject[entities.Subject] = managers.Subject(
+            self.api_client, entities.Subject
+        )
+        self.lead_status: managers.LeadStatus[entities.LeadStatus] = (
+            managers.LeadStatus(self.api_client, entities.LeadStatus)
+        )
+        self.lead_source: managers.LeadSource[entities.LeadSource] = (
+            managers.LeadSource(self.api_client, entities.LeadSource)
+        )
+        self.group: managers.Group[entities.Group] = managers.Group(
+            self.api_client, entities.Group
+        )
+        self.lesson: managers.Lesson[entities.Lesson] = managers.Lesson(
+            self.api_client, entities.Lesson
+        )
+        self.room: managers.Room[entities.Room] = managers.Room(
+            self.api_client, entities.Room
+        )
+        self.task: managers.Task[entities.Task] = managers.Task(
+            self.api_client, entities.Task
+        )
+        self.tariff: managers.Tariff[entities.Tariff] = managers.Tariff(
+            self.api_client, entities.Tariff
+        )
+        self.regular_lesson: managers.RegularLesson[entities.RegularLesson] = (
+            managers.RegularLesson(self.api_client, entities.RegularLesson)
+        )
+        self.pay_item: managers.PayItem[entities.PayItem] = managers.PayItem(
+            self.api_client, entities.PayItem
+        )
         self.pay_item_category = managers.PayItemCategory(
             self.api_client, entities.PayItemCategory
         )
-        self.pay_account = managers.PayAccount(self.api_client, entities.PayAccount)
-        self.pay = managers.Pay(self.api_client, entities.Pay)
-        self.lesson_type = managers.LessonType(self.api_client, entities.LessonType)
-        self.lead_reject = managers.LeadReject(self.api_client, entities.LeadReject)
-        self.discount = managers.Discount(self.api_client, entities.Discount)
-        self.cgi = managers.CGI(self.api_client, entities.CGI)
-        self.customer_tariff = managers.CustomerTariff(
-            self.api_client, entities.CustomerTariff
+        self.pay_account: managers.PayAccount[entities.PayAccount] = (
+            managers.PayAccount(self.api_client, entities.PayAccount)
         )
-        self.communication = managers.Communication(
-            self.api_client, entities.Communication
+        self.pay: managers.Pay[entities.Pay] = managers.Pay(
+            self.api_client, entities.Pay
+        )
+        self.lesson_type: managers.LessonType[entities.LessonType] = (
+            managers.LessonType(self.api_client, entities.LessonType)
+        )
+        self.lead_reject: managers.LeadReject[entities.LeadReject] = (
+            managers.LeadReject(self.api_client, entities.LeadReject)
+        )
+        self.discount: managers.Discount[entities.Discount] = managers.Discount(
+            self.api_client, entities.Discount
+        )
+        self.cgi: managers.CGI[entities.CGI] = managers.CGI(
+            self.api_client, entities.CGI
+        )
+        self.customer_tariff: managers.CustomerTariff[entities.CustomerTariff] = (
+            managers.CustomerTariff(self.api_client, entities.CustomerTariff)
+        )
+        self.communication: managers.Communication[entities.Communication] = (
+            managers.Communication(self.api_client, entities.Communication)
         )
         self.log = managers.Log(self.api_client, entities.Log)
 

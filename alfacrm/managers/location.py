@@ -1,11 +1,11 @@
-import typing
+from typing import Generic, TypeVar
 
 from ..core.entity_manager import EntityManager
 
-T = typing.TypeVar("T")
+T = TypeVar("T")
 
 
-class Location(EntityManager, typing.Generic[T]):
+class Location(EntityManager[T], Generic[T]):
     object_name = "location"
 
     async def list(

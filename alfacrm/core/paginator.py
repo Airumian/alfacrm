@@ -10,7 +10,7 @@ T = typing.TypeVar("T")
 class Paginator(typing.Generic[T]):
     def __init__(
         self,
-        alfa_object: "entity_manager.EntityManager",
+        alfa_object: "entity_manager.EntityManager[T]",
         start_page: int = 0,
         page_size: int = 20,
         filters: dict[str, typing.Any] | None = None,
@@ -19,13 +19,11 @@ class Paginator(typing.Generic[T]):
         self._page: Page[T] | None = None
         self._total = 0
         self._page_size = page_size
-        if filters is None:
-            filters = {}
-        self._filters = filters
+        self._filters = {} if filters is None else filters
         self._object = alfa_object
 
-    def __aiter__(self) -> typing.Iterable[Page[T]]:
-        return self  # noqa
+    def __aiter__(self) -> typing.AsyncIterator[Page[T]]:
+        return self
 
     async def __anext__(self) -> Page[T]:
         if self._total and self._page_number >= self.total_page:
@@ -42,8 +40,4 @@ class Paginator(typing.Generic[T]):
 
     @property
     def total_page(self) -> int:
-        """
-        Get total page by total count and page size
-        :return:
-        """
         return math.ceil(self._total / self._page_size)

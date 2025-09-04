@@ -1,11 +1,11 @@
-import typing
+from typing import Generic, TypeVar
 
 from ..core.entity_manager import EntityManager
 
-T = typing.TypeVar("T")
+T = TypeVar("T")
 
 
-class Branch(EntityManager, typing.Generic[T]):
+class Branch(EntityManager[T], Generic[T]):
     object_name = "branch"
 
     async def list(
@@ -16,7 +16,7 @@ class Branch(EntityManager, typing.Generic[T]):
         is_active: bool | None = None,
         subject_ids: list[int] | None = None,
         **kwargs,
-    ) -> typing.List[T]:
+    ) -> list[T]:
         """
         Get list branches
         :param name: filter by name
